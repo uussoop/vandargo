@@ -70,6 +70,25 @@ func main() {
 	fmt.Println("\nPress Enter after completing the payment to verify it...")
 	fmt.Scanln()
 
+	// Get transaction information
+	info, err := client.GetTransactionInfo(ctx, "YOUR_PAYMENT_TOKEN")
+	if err != nil {
+		log.Fatalf("Failed to get transaction info: %v", err)
+	}
+
+	// Check the response
+	if info.Status == 1 {
+		fmt.Printf("Transaction Amount: %s Rials\n", info.Amount)
+		fmt.Printf("Transaction ID: %d\n", info.TransID)
+		fmt.Printf("Reference Number: %s\n", info.RefNumber)
+		fmt.Printf("Tracking Code: %s\n", info.TrackingCode)
+		fmt.Printf("Card Number: %s\n", info.CardNumber)
+		fmt.Printf("Created At: %s\n", info.CreatedAt)
+		fmt.Printf("Payment Date: %s\n", info.PaymentDate)
+	} else {
+		fmt.Printf("Error Code: %d\n", info.Code)
+		fmt.Printf("Error Message: %s\n", info.Message)
+	}
 	// Verify payment
 	verifyResponse, err := client.VerifyPayment(ctx, response.Token)
 	if err != nil {
