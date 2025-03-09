@@ -182,27 +182,26 @@ func (c *Client) VerifyPayment(ctx context.Context, token string) (*PaymentVerif
 	return &apiResp, nil
 }
 
-// GetPaymentStatus checks the status of a payment
-func (c *Client) GetPaymentStatus(ctx context.Context, token string) (*PaymentStatusResponse, error) {
-	// Create status request
-	req := &PaymentStatusRequest{
-		Token: token,
+// GetTransactionInfo retrieves detailed information about a transaction
+func (c *Client) GetTransactionInfo(ctx context.Context, token string) (*TransactionInfoResponse, error) {
+	if token == "" {
+		return nil, fmt.Errorf("token is required")
 	}
 
 	// Prepare API request body
 	apiReq := map[string]interface{}{
 		"api_key": c.config.GetAPIKey(),
-		"token":   req.Token,
+		"token":   token,
 	}
 
 	// Make API request
 	respBody, _, err := c.makeRequest(ctx, http.MethodPost, "/api/v4/transaction", apiReq)
 	if err != nil {
-		return nil, fmt.Errorf("failed to check payment status: %w", err)
+		return nil, fmt.Errorf("failed to get transaction info: %w", err)
 	}
 
 	// Parse API response
-	var apiResp PaymentStatusResponse
+	var apiResp TransactionInfoResponse
 	if err := json.Unmarshal(respBody, &apiResp); err != nil {
 		return nil, fmt.Errorf("failed to parse API response: %w", err)
 	}

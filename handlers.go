@@ -61,6 +61,16 @@ func (c *Client) RegisterRoutes(router RouterInterface) {
 		SecurityHeadersMiddleware(),
 		IPFilterMiddleware(c.config),
 	))
+
+	// Transaction info
+	router.GET("/payments/transaction-info", Chain(
+		c.handleTransactionInfo,
+		RequestIDMiddleware(),
+		LoggingMiddleware(c.logger),
+		SecurityHeadersMiddleware(),
+		RateLimitMiddleware(20, 60),
+		AuthMiddleware(c.config),
+	))
 }
 
 // handlePaymentInit handles payment initialization requests
@@ -408,6 +418,31 @@ func (c *Client) handleCallback(w http.ResponseWriter, r *http.Request) {
 		"status":  true,
 		"message": "Callback received successfully",
 	})
+}
+
+// handleTransactionInfo handles transaction information requests
+func (c *Client) handleTransactionInfo(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	// Get token from query parameter
+	token := r.URL.Query().Get("token")
+	if token == "" {
+		c.respondWithError(w, http.StatusBadRequest, ErrInvalidRequest, "Token is required")
+		return
+	}
+
+	// Get transaction info
+	resp, err := c.GetTransactionInfo(ctx, token)
+	if err != nil {
+		c.respondWithError(w, http.StatusInternalServerError, ErrInternalError, "Failed to get transaction info")
+		c.logger.Error(ctx, "Failed to get transaction info", err, map[string]interface{}{
+			"token": token,
+		})
+		return
+	}
+
+	// Respond with the transaction info
+	c.respondWithJSON(w, http.StatusOK, resp)
 }
 
 // parseJSONBody parses a JSON request body into the given struct

@@ -209,3 +209,23 @@ type APIError struct {
 func (e *APIError) Error() string {
 	return fmt.Sprintf("API error: %s (code: %s)", e.Message, e.Code)
 }
+
+// TransactionInfoResponse represents the response from the transaction information endpoint
+type TransactionInfoResponse struct {
+	Status       int    `json:"status"`
+	Amount       string `json:"amount"`
+	Wage         string `json:"wage"`
+	ShaparakWage string `json:"shaparakWage"`
+	TransID      int64  `json:"transId"`
+	RefNumber    string `json:"refnumber"`
+	TrackingCode string `json:"trackingCode"`
+	FactorNumber string `json:"factorNumber"`
+	Mobile       string `json:"mobile"`
+	Description  string `json:"description"`
+	CardNumber   string `json:"cardNumber"`
+	CID          string `json:"CID"`
+	CreatedAt    string `json:"createdAt"`
+	PaymentDate  string `json:"paymentDate"`
+	Code         int    `json:"code"`
+	Message      string `json:"message"`
+}

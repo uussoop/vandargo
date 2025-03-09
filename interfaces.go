@@ -78,8 +78,8 @@ type PaymentServiceInterface interface {
 	// VerifyPayment verifies a payment transaction
 	VerifyPayment(ctx context.Context, token string) (*PaymentVerifyResponse, error)
 
-	// GetPaymentStatus checks the status of a payment
-	GetPaymentStatus(ctx context.Context, token string) (*PaymentStatusResponse, error)
+	// GetTransactionInfo retrieves detailed information about a transaction
+	GetTransactionInfo(ctx context.Context, token string) (*TransactionInfoResponse, error)
 
 	// RefundPayment initiates a refund for a transaction
 	RefundPayment(ctx context.Context, transactionID string, amount int) (*RefundResponse, error)
