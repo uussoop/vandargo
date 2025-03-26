@@ -28,7 +28,10 @@ type Transaction struct {
 	Metadata map[string]string `json:"metadata,omitempty"`
 
 	// RefID is the reference ID received after successful payment
-	RefID string `json:"ref_id,omitempty"`
+	TransactionID int64 `json:"transaction_id,omitempty"`
+
+	// CID is the SHA256 hash of the card number
+	CID string `json:"cid,omitempty"`
 
 	// CardNumber is the masked card number used for payment (last 4 digits)
 	CardNumber string `json:"card_number,omitempty"`
@@ -90,11 +93,11 @@ type PaymentVerifyRequest struct {
 
 // PaymentVerifyResponse represents a response to a payment verification
 type PaymentVerifyResponse struct {
-	// Status indicates if the verification was successful
-	Status int16 `json:"status"`
+	// Status indicates if the verification was successful (0 or 1)
+	Status int `json:"status"`
 
 	// Amount is the verified payment amount
-	Amount int64 `json:"amount,omitempty"`
+	Amount string `json:"amount,omitempty"`
 
 	// RealAmount is the amount after deducting fees
 	RealAmount int64 `json:"realAmount,omitempty"`
@@ -102,8 +105,8 @@ type PaymentVerifyResponse struct {
 	// Wage is the fee amount
 	Wage int64 `json:"wage,omitempty"`
 
-	// RefID is the payment reference ID
-	RefID string `json:"refId,omitempty"`
+	// TransID is the unique payment identifier used for transaction tracking
+	TransID int64 `json:"transId,omitempty"`
 
 	// FactorNumber is the invoice/factor number
 	FactorNumber string `json:"factorNumber,omitempty"`
@@ -117,13 +120,13 @@ type PaymentVerifyResponse struct {
 	// CardNumber is the masked card number
 	CardNumber string `json:"cardNumber,omitempty"`
 
-	// CardHash is the hashed card number
-	CardHash string `json:"cardHash,omitempty"`
+	// PaymentDate is when the payment was completed
+	PaymentDate string `json:"paymentDate,omitempty"`
 
-	// Date is when the payment was completed
-	Date int64 `json:"date,omitempty"`
+	// CID is the SHA256 hash of the card number
+	CID string `json:"cid,omitempty"`
 
-	// Message contains any message from the API
+	// Message contains the transaction status
 	Message string `json:"message,omitempty"`
 
 	// Errors contains any error messages

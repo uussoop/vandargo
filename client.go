@@ -156,9 +156,9 @@ func (c *Client) VerifyPayment(ctx context.Context, token string) (*PaymentVerif
 	if err == nil {
 		// Update transaction status
 		transaction.Status = "PAID"
-		transaction.RefID = apiResp.RefID
+		transaction.TransactionID = apiResp.TransID
 		transaction.CardNumber = apiResp.CardNumber
-		transaction.CardHash = apiResp.CardHash
+		transaction.CID = apiResp.CID
 		transaction.UpdatedAt = time.Now()
 
 		completedAt := time.Now()
