@@ -91,7 +91,7 @@ type PaymentVerifyRequest struct {
 // PaymentVerifyResponse represents a response to a payment verification
 type PaymentVerifyResponse struct {
 	// Status indicates if the verification was successful
-	Status bool `json:"status"`
+	Status int16 `json:"status"`
 
 	// Amount is the verified payment amount
 	Amount int64 `json:"amount,omitempty"`

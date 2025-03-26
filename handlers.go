@@ -210,7 +210,7 @@ func (c *Client) handlePaymentVerify(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Check if payment verification was successful
-	if !apiResp.Status {
+	if apiResp.Status != 1 {
 		c.respondWithError(w, statusCode, ErrVerificationFailed, apiResp.Message)
 		return
 	}

@@ -147,7 +147,7 @@ func (c *Client) VerifyPayment(ctx context.Context, token string) (*PaymentVerif
 	}
 
 	// Check if payment verification was successful
-	if !apiResp.Status {
+	if apiResp.Status != 1 {
 		return &apiResp, fmt.Errorf("payment verification failed: %s", apiResp.Message)
 	}
 
