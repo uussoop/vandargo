@@ -102,9 +102,6 @@ type PaymentVerifyResponse struct {
 	// RealAmount is the amount after deducting fees
 	RealAmount int64 `json:"realAmount,omitempty"`
 
-	// Wage is the fee amount
-	Wage int64 `json:"wage,omitempty"`
-
 	// TransID is the unique payment identifier used for transaction tracking
 	TransID int64 `json:"transId,omitempty"`
 
